@@ -1,6 +1,6 @@
-import { AppTheme } from "../types";
+import { AppTheme } from "../types"
 
-export const theme:AppTheme={
+export const theme: AppTheme={
     colors: {
         primary: '#3498db',
         background: '#61dafb',
