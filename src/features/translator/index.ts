@@ -1,1 +1,1 @@
-export { TranslatorScrean } from './translatorScrean'
+export { TranslatorScreen } from './translatorScreen'

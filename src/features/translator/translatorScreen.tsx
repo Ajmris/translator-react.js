@@ -2,12 +2,12 @@ import React from "react"
 import styled from "styled-components"
 import { useTranslations } from "../../lib/hooks"
 
-export const TranslatorScrean: React.FunctionComponent =()=>{
+export const TranslatorScreen: React.FunctionComponent =()=>{
     const T=useTranslations()    
     return(
         <Container>
             Hello from Translator!<br />
-            {T.appName}
+            {T.companyName}
         </Container>
     )
 }
@@ -36,5 +36,8 @@ export const TranslatorScrean: React.FunctionComponent<TranslatorScreanProps> =(
 )*/
 
 const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex: 1;
     color: ${({theme})=>theme.colors.typegraphy}
 `
