@@ -1,6 +1,8 @@
 import React from "react"
 import styled from "styled-components"
 import { useTranslations } from "../../lib/hooks"
+import { Louder, SelectLanguage, Confidence, TextCounter, Textinput } from "lib/components"
+import { ExchangeLanguage } from "lib/components/ExchangeLanguage"
 
 export const TranslatorScreen: React.FunctionComponent =()=>{
     const T=useTranslations()    
@@ -8,6 +10,27 @@ export const TranslatorScreen: React.FunctionComponent =()=>{
         <Container>
             Hello from Translator!<br />
             {T.companyName}
+            <TranslatorContainer>
+                <InputContainer>
+                    <SelectLanguage />
+                    <Textinput />
+                    <LouderContainer>
+                        <Louder />
+                    </LouderContainer>
+                    <InputFooter>
+                        <Confidence />
+                        <TextCounter />
+                    </InputFooter>
+                </InputContainer>
+                <ExchangeLanguage />
+                <InputContainer>
+                    <SelectLanguage />
+                    <Textinput />
+                    <LouderContainer>
+                        <Louder />
+                    </LouderContainer>
+                </InputContainer>
+            </TranslatorContainer>
         </Container>
     )
 }
@@ -40,4 +63,22 @@ const Container = styled.div`
     flex-direction: column;
     flex: 1;
     color: ${({theme})=>theme.colors.typegraphy}
+`
+const TranslatorContainer =styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 50px;
+`
+const InputContainer=styled.div`
+    display: flex;
+    flex-direction: column;
+`
+const LouderContainer=styled.div`
+    padding: 5px 10px;
+`
+const InputFooter=styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 `

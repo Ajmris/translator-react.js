@@ -1,2 +1,8 @@
 export { Header } from './Header'
 export { Footer } from './Footer'
+export { Textinput } from './Textinput'
+export { SelectLanguage } from './SelectLanguage'
+export { Louder } from './Louder'
+export { Confidence } from './Confidence'
+export { ExchangeLanguage } from './ExchangeLanguage'
+export { TextCounter } from './TextCounter'
