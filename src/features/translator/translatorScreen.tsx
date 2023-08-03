@@ -1,22 +1,63 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { useTranslations } from "../../lib/hooks"
-import { Louder, SelectLanguage, Confidence, TextCounter, Textinput } from "lib/components"
+import { Message, Loader, SelectLanguage, Confidence, TextCounter, Textinput } from "lib/components"
 import { ExchangeLanguage } from "lib/components/ExchangeLanguage"
+import { useSupportedLanguages } from "./useSupportedLanguages"
+import { Language } from "lib/models"
 
 export const TranslatorScreen: React.FunctionComponent =()=>{
-    const T=useTranslations()    
+    const [languages, setLanguages]=useState<Array<Language>>([])
+    const {isLoading,hasError,fetch: getSupportedLanguages}=useSupportedLanguages(
+        setLanguages
+    )
+    const T=useTranslations()
+    useEffect(()=>{
+        getSupportedLanguages()
+    }, [])
+    //useSupportedLanguages()
+    if(isLoading){
+        return(
+            <FetchLoaderContainer>
+                <Loader>
+                    <LoaderText>
+                        {T.screen.translator.loading}
+                    </LoaderText>
+                </Loader>
+            </FetchLoaderContainer>
+        )
+    }
+    if(hasError){
+        return(
+            <CenterContainer>
+                <Message
+                withButton
+                message={T.screen.translator.error}
+                onClick={()=>getSupportedLanguages}
+                />
+            </CenterContainer>
+        )
+    }
+    if(languages.length===0){
+        return(
+            <CenterContainer>
+                <Message
+                withButton={false} // Tutaj możesz ustawić wartość true lub false w zależności od potrzeby
+                message={T.screen.translator.empty}
+                />
+            </CenterContainer>
+        )
+    }
     return(
         <Container>
             Hello from Translator!<br />
-            {T.companyName}
             <TranslatorContainer>
                 <InputContainer>
                     <SelectLanguage />
                     <Textinput />
-                    <LouderContainer>
-                        <Louder />
-                    </LouderContainer>
+                    <LoaderContainer>
+                        <Loader />
+                    </LoaderContainer>
                     <InputFooter>
                         <Confidence />
                         <TextCounter />
@@ -26,9 +67,9 @@ export const TranslatorScreen: React.FunctionComponent =()=>{
                 <InputContainer>
                     <SelectLanguage />
                     <Textinput />
-                    <LouderContainer>
-                        <Louder />
-                    </LouderContainer>
+                    <LoaderContainer>
+                        <Loader />
+                    </LoaderContainer>
                 </InputContainer>
             </TranslatorContainer>
         </Container>
@@ -74,11 +115,24 @@ const InputContainer=styled.div`
     display: flex;
     flex-direction: column;
 `
-const LouderContainer=styled.div`
+const LoaderContainer=styled.div`
     padding: 5px 10px;
+`
+const FetchLoaderContainer=styled.div`
+    display: flex;
+    width: 50%;
+    align-self: center;
 `
 const InputFooter=styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+`
+const LoaderText=styled.div`
+    color: ${({theme})=>theme.colors.typography};
+    margin-top: 10px;
+`
+const CenterContainer=styled.div`
+    display: flex;
+    justify-content: center;
 `
