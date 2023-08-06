@@ -4,6 +4,8 @@ import { Loader, SelectLanguage, Confidence, TextCounter, Textinput } from "lib/
 import { ExchangeLanguage } from "lib/components/ExchangeLanguage"
 import { Language, LanguageCode } from "lib/models"
 import { SelectedLanguages } from "./types"
+import { useTranslations } from "lib/hooks"
+import { APP_CONFIG } from "lib/config"
 
 type TranslatorScreanProps={
     languages: Array<Language>
@@ -12,6 +14,8 @@ type TranslatorScreanProps={
 export const TranslatorScreen: React.FunctionComponent<TranslatorScreanProps> =({
     languages
 })=>{
+    const T =useTranslations()
+    const [query, setQuery]=useState<string>('')
     const [SelectedLanguages, setSelectedLanguages]=useState<SelectedLanguages>({
         source: LanguageCode.Auto,
         target: LanguageCode.English
@@ -23,20 +27,32 @@ export const TranslatorScreen: React.FunctionComponent<TranslatorScreanProps> =(
                 <InputContainer>
                     <SelectLanguage
                         languages={languages}
-                        exclude={[SelectedLanguages.source]}
+                        exclude={[SelectedLanguages.target]}
                         onChange={newCode => setSelectedLanguages(
                             prevState=>
                             ({...prevState, source: newCode})
                         )}
                         selectedLanguage={SelectedLanguages.source}
                     />
-                    <Textinput />
+                    <Textinput
+                        autoFocus
+                        value={query}
+                        onChangeText={newQuery=>{
+                            if(newQuery.length<APP_CONFIG.TEXT_INPUT_LIMIT){
+                                setQuery(newQuery)
+                            }
+                        }}
+                        placeholder={T.screens.translator.sourceInputPlaceholder}
+                    />
                     <LoaderContainer>
                         <Loader />
                     </LoaderContainer>
                     <InputFooter>
                         <Confidence />
-                        <TextCounter />
+                        <TextCounter
+                            counter={query.length}
+                            limit={APP_CONFIG.TEXT_INPUT_LIMIT}
+                        />
                     </InputFooter>
                 </InputContainer>
                 <ExchangeLanguage
@@ -56,7 +72,7 @@ export const TranslatorScreen: React.FunctionComponent<TranslatorScreanProps> =(
                         )}
                         selectedLanguage={SelectedLanguages.target}
                     />
-                    <Textinput />
+                    <Textinput disabled/>
                     <LoaderContainer>
                         <Loader />
                     </LoaderContainer>
